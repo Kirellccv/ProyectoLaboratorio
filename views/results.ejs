@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let dateInput = document.getElementById("date");
+            if (!dateInput.value) {
+                let today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+            }
+
+            // Mostrar/ocultar el formulario para añadir nuevo resultado
+            const addButton = document.getElementById("addResultButton");
+            const addForm = document.getElementById("addResultForm");
+
+            addButton.addEventListener("click", function() {
+                if (addForm.style.display === "none" || addForm.style.display === "") {
+                    addForm.style.display = "block";
+                } else {
+                    addForm.style.display = "none";
+                }
+            });
+
+            // Función para actualizar los datos del paciente al seleccionarlo
+            const patientSelect = document.getElementById("patientId");
+            const patientNameDisplay = document.getElementById("patientNameDisplay");
+            const patientDniDisplay = document.getElementById("patientDniDisplay");
+
+            patientSelect.addEventListener("change", function() {
+                const selectedPatientId = patientSelect.value;
+                const selectedPatient = patients.find(patient => patient._id === selectedPatientId);
+
+                if (selectedPatient) {
+                    patientNameDisplay.textContent = selectedPatient.name;
+                    patientDniDisplay.textContent = selectedPatient.dni;
+                }
+            });
+        });
+
+        // Función para imprimir la página
+        function printResults() {
+            window.print();
+        }
+
+        // Función para descargar resultados como TXT
+        function downloadTxt(resultId) {
+        const result = results.find(r => r._id === resultId);
+        if (!result) {
+            alert("Resultado no encontrado.");
+            return;
+        }
+        
+        // Creamos el contenido del archivo TXT
+        const text = `
+Paciente: ${result.patientId.name}
+DNI: ${result.patientId.dni}
+Fecha: ${new Date(result.date).toLocaleDateString()}
+Hemoglobina: ${result.hemoglobina} g/dL
+Hematocrito: ${result.hematocrito} %
+Leucocitos: ${result.leucocitos} 10^3/µL
+Plaquetas: ${result.plaquetas} 10^3/µL
+`;
+        
+        // Creamos un blob con el texto para simular la descarga
+        const blob = new Blob([text], { type: 'text/plain' });
+        
+        // Creamos un enlace temporal para disparar la descarga
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `resultado_${result._id}.txt`;  // Nombre del archivo de texto
+        
+        // Disparamos el clic en el enlace para descargar el archivo
+        link.click();
+    }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/patients">Pacientes</a>
+        <a href="/results">Resultados</a>
+        <a href="/auth/logout">Cerrar Sesión</a>
+    </nav>
+    <h1>Gestión de Resultados</h1>
+
+    <!-- Botón para Añadir Nuevo Resultado -->
+    <button id="addResultButton" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
+        Añadir Nuevo Resultado
+    </button>
+
+    <!-- Formulario para Añadir/Editar Resultados -->
+    <div id="addResultForm" style="display: none;">
+        <h2><%= editing ? "Editar Resultado" : "Añadir Nuevo Resultado" %></h2>
+        <form action="<%= editing ? '/results/' + resultData._id + '/update' : '/results' %>" method="POST">
+            
+            <label>Seleccionar Paciente:</label>
+            <select name="patientId" id="patientId" required>
+                <% patients.forEach(patient => { %>
+                    <option value="<%= patient._id %>" <%= editing && resultData.patientId.toString() === patient._id.toString() ? "selected" : "" %> >
+                        <%= patient.name %> - <%= patient.dni %>
+                    </option>
+                <% }) %>
+            </select>
+
+            <br>
+            <!-- Muestra el nombre y DNI del paciente seleccionado -->
+            <p><strong>Paciente:</strong> <span id="patientNameDisplay">Nombre del Paciente</span></p>
+            <p><strong>DNI:</strong> <span id="patientDniDisplay">DNI del Paciente</span></p>
+
+            <label>Fecha del análisis:</label>
+            <input type="date" id="date" name="date" value="<%= editing ? new Date(resultData.date).toISOString().split('T')[0] : '' %>" required />
+
+            <h3>Resultados del Análisis</h3>
+            <div style="border: 1px solid #000; padding: 20px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <h4>Informe de Resultados</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2;">
+                            <th style="padding: 8px; text-align: left;">Parámetro</th>
+                            <th style="padding: 8px; text-align: left;">Valor</th>
+                            <th style="padding: 8px; text-align: left;">Rango Normal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px;">Hemoglobina (g/dL)</td>
+                            <td style="padding: 8px;">
+                                <input type="number" name="hemoglobina" value="<%= editing ? resultData.hemoglobina : (12 + Math.random() * 4).toFixed(1) %>" step="0.1" min="0" />
+                            </td>
+                            <td style="padding: 8px;">12.0 - 16.0 (Mujeres) / 14.0 - 18.0 (Hombres)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px;">Hematocrito (%)</td>
+                            <td style="padding: 8px;">
+                                <input type="number" name="hematocrito" value="<%= editing ? resultData.hematocrito : (36 + Math.random() * 4).toFixed(1) %>" step="0.1" min="0" />
+                            </td>
+                            <td style="padding: 8px;">36.0 - 46.0 (Mujeres) / 40.0 - 54.0 (Hombres)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px;">Leucocitos (10^3/µL)</td>
+                            <td style="padding: 8px;">
+                                <input type="number" name="leucocitos" value="<%= editing ? resultData.leucocitos : (4 + Math.random() * 6).toFixed(2) %>" step="0.01" min="0" />
+                            </td>
+                            <td style="padding: 8px;">4.0 - 11.0</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px;">Plaquetas (10^3/µL)</td>
+                            <td style="padding: 8px;">
+                                <input type="number" name="plaquetas" value="<%= editing ? resultData.plaquetas : (150 + Math.random() * 100).toFixed(0) %>" step="1" min="0" />
+                            </td>
+                            <td style="padding: 8px;">150.0 - 450.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Observaciones:</strong></p>
+                <p>Los resultados son indicativos de un análisis estándar de sangre. Se recomienda consultar con un médico para interpretar los resultados y realizar un diagnóstico adecuado.</p>
+            </div>
+
+            <button type="submit"><%= editing ? "Actualizar" : "Añadir" %></button>
+            <button type="button" onclick="cancelAddResult()" style="background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
+                Cancelar
+            </button>
+        </form>
+    </div>
+
+    <!-- Lista de Resultados (Tarjetas Separadas) -->
+    <h2>Lista de Resultados</h2>
+    <div style="display: flex; flex-wrap: wrap;">
+        <% results.forEach(result => { %>
+            <div style="border: 1px solid #000; padding: 20px; margin: 10px; width: 30%; box-sizing: border-box; font-family: Arial, sans-serif;">
+                <h4><%= result.patientId.name %> - <%= result.patientId.dni %></h4>
+                <p><strong>Fecha:</strong> <%= new Date(result.date).toLocaleDateString() %></p>
+                <p><strong>Hemoglobina:</strong> <%= result.hemoglobina %> g/dL</p>
+                <p><strong>Hematocrito:</strong> <%= result.hematocrito %> %</p>
+                <p><strong>Leucocitos:</strong> <%= result.leucocitos %> 10^3/µL</p>
+                <p><strong>Plaquetas:</strong> <%= result.plaquetas %> 10^3/µL</p>
+                <a href="/results/<%= result._id %>/edit">Editar</a>
+                <form action="/results/<%= result._id %>/delete" method="POST" style="display:inline;">
+                    <button type="submit">Eliminar</button>
+                </form>
+                <button onclick="downloadTxt('<%= result._id %>')" style="background-color: #2196F3; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
+                    Descargar TXT
+                </button>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

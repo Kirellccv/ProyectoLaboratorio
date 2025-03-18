@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Asegúrate de tener un archivo CSS -->
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/patients">Pacientes</a>
+        <a href="/results">Resultados</a>
+        <a href="/auth/logout">Cerrar Sesión</a>
+    </nav>
+    <h1>Pacientes</h1>
+    <a href="/patients/add"><button>Añadir Paciente</button></a>
+
+    <div class="patients-container">
+        <% patients.forEach(patient => { %>
+            <div class="patient-card">
+                <h2><%= patient.name %></h2>
+                <p><strong>Edad:</strong> <%= patient.age %></p>
+                <p><strong>DNI:</strong> <%= patient.dni %></p>
+                <p><strong>Género:</strong> <%= patient.gender %></p>
+                <p><strong>Teléfono:</strong> <%= patient.phone %></p>
+                <p><strong>Estado:</strong> <%= patient.status %></p>
+                <a href="/patients/edit/<%= patient._id %>"><button>Editar</button></a>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

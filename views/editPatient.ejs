@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Paciente</title>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-cancel {
+            background-color: #dc3545;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            margin-top: 20px;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/patients">Pacientes</a>
+        <a href="/results">Resultados</a>
+        <a href="/auth/logout">Cerrar Sesión</a>
+    </nav>
+    <h1>Editar Paciente</h1>
+
+    <div class="form-container">
+        <form action="/patients/update/<%= patient._id %>" method="POST">
+            <label>Nombre:</label>
+            <input type="text" name="name" value="<%= patient.name %>" required>
+
+            <label>Edad:</label>
+            <input type="number" name="age" min="0" value="<%= patient.age %>" required>
+
+            <label>DNI:</label>
+            <input type="text" name="dni" value="<%= patient.dni %>" required>
+
+            <label>Género:</label>
+            <select name="gender" required>
+                <option value="Masculino" <%= patient.gender === 'Masculino' ? 'selected' : '' %>>Masculino</option>
+                <option value="Femenino" <%= patient.gender === 'Femenino' ? 'selected' : '' %>>Femenino</option>
+                <option value="Otro" <%= patient.gender === 'Otro' ? 'selected' : '' %>>Otro</option>
+            </select>
+
+            <label>Teléfono:</label>
+            <input type="tel" name="phone" value="<%= patient.phone %>" required>
+
+            <label>Estado:</label>
+            <select name="status" required>
+                <option value="No empezado" <%= patient.status === 'No empezado' ? 'selected' : '' %>>No empezado</option>
+                <option value="En proceso" <%= patient.status === 'En proceso' ? 'selected' : '' %>>En proceso</option>
+                <option value="Terminado" <%= patient.status === 'Terminado' ? 'selected' : '' %>>Terminado</option>
+            </select>
+
+            <button type="submit" class="btn">Actualizar Paciente</button>
+        </form>
+        
+        <!-- Botón de Cancelar -->
+        <a href="/patients" class="btn btn-cancel">Cancelar</a>
+
+        <!-- Formulario de eliminación -->
+        <form action="/patients/delete/<%= patient._id %>" method="POST" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-delete">Eliminar Paciente</button>
+        </form>
+    </div>
+</body>
+</html>

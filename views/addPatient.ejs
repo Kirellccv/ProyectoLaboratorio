@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Paciente</title>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/patients">Pacientes</a>
+        <a href="/results">Resultados</a>
+        <a href="/auth/logout">Cerrar Sesión</a>
+    </nav>
+    <h1>Añadir Paciente</h1>
+
+    <div class="form-container">
+        <form action="/patients/add" method="POST">
+            <label>Nombre:</label>
+            <input type="text" name="name" required>
+
+            <label>Edad:</label>
+            <input type="number" name="age" min="0" required>
+
+            <label>DNI:</label>
+            <input type="text" name="dni" required>
+
+            <label>Género:</label>
+            <select name="gender">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+            </select>
+
+            <label>Teléfono:</label>
+            <input type="tel" name="phone" required>
+
+            <label>Estado:</label>
+            <select name="status">
+                <option value="No empezado">No empezado</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Terminado">Terminado</option>
+            </select>
+
+            <button type="submit" class="btn">Guardar Paciente</button>
+        </form>
+        <a href="/patients" class="btn" style="background-color: #dc3545;">Cancelar</a>
+    </div>
+</body>
+</html>
