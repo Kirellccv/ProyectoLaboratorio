@@ -7,15 +7,22 @@
     <link rel="stylesheet" href="/styles.css"> <!-- Asegúrate de tener un archivo CSS -->
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav>
         <a href="/">Inicio</a>
         <a href="/patients">Pacientes</a>
         <a href="/results">Resultados</a>
         <a href="/auth/logout">Cerrar Sesión</a>
     </nav>
+    
     <h1>Pacientes</h1>
-    <a href="/patients/add"><button>Añadir Paciente</button></a>
 
+    <!-- Botón para añadir pacientes -->
+    <a href="/patients/add">
+        <button>Añadir Paciente</button>
+    </a>
+
+    <!-- Contenedor de pacientes -->
     <div class="patients-container">
         <% patients.forEach(patient => { %>
             <div class="patient-card">
@@ -25,7 +32,9 @@
                 <p><strong>Género:</strong> <%= patient.gender %></p>
                 <p><strong>Teléfono:</strong> <%= patient.phone %></p>
                 <p><strong>Estado:</strong> <%= patient.status %></p>
-                <a href="/patients/edit/<%= patient._id %>"><button>Editar</button></a>
+                <a href="/patients/edit/<%= patient._id %>">
+                    <button>Editar</button>
+                </a>
             </div>
         <% }) %>
     </div>

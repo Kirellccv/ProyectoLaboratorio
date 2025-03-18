@@ -3,79 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados</title>
+    <title>Gestión de Resultados</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Vincula tu archivo CSS -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let dateInput = document.getElementById("date");
-            if (!dateInput.value) {
-                let today = new Date().toISOString().split('T')[0];
-                dateInput.value = today;
+        document.addEventListener("DOMContentLoaded", function () {
+            const addResultButton = document.getElementById("addResultButton");
+            const addResultForm = document.getElementById("addResultForm");
+            const dateInput = document.getElementById("date");
+            const hemoglobinaInput = document.getElementById("hemoglobina");
+            const hematocritoInput = document.getElementById("hematocrito");
+            const leucocitosInput = document.getElementById("leucocitos");
+            const plaquetasInput = document.getElementById("plaquetas");
+
+            if (addResultButton && addResultForm) {
+                addResultButton.addEventListener("click", function () {
+                    if (addResultForm.style.display === "none" || addResultForm.style.display === "") {
+                        addResultForm.style.display = "block";
+                        const today = new Date().toISOString().split('T')[0];
+                        dateInput.value = today;
+                        hemoglobinaInput.value = (12 + Math.random() * 4).toFixed(1);
+                        hematocritoInput.value = (36 + Math.random() * 4).toFixed(1);
+                        leucocitosInput.value = (4 + Math.random() * 6).toFixed(2);
+                        plaquetasInput.value = (150 + Math.random() * 100).toFixed(0);
+                    } else {
+                        addResultForm.style.display = "none";
+                    }
+                });
             }
-
-            // Mostrar/ocultar el formulario para añadir nuevo resultado
-            const addButton = document.getElementById("addResultButton");
-            const addForm = document.getElementById("addResultForm");
-
-            addButton.addEventListener("click", function() {
-                if (addForm.style.display === "none" || addForm.style.display === "") {
-                    addForm.style.display = "block";
-                } else {
-                    addForm.style.display = "none";
-                }
-            });
-
-            // Función para actualizar los datos del paciente al seleccionarlo
-            const patientSelect = document.getElementById("patientId");
-            const patientNameDisplay = document.getElementById("patientNameDisplay");
-            const patientDniDisplay = document.getElementById("patientDniDisplay");
-
-            patientSelect.addEventListener("change", function() {
-                const selectedPatientId = patientSelect.value;
-                const selectedPatient = patients.find(patient => patient._id === selectedPatientId);
-
-                if (selectedPatient) {
-                    patientNameDisplay.textContent = selectedPatient.name;
-                    patientDniDisplay.textContent = selectedPatient.dni;
-                }
-            });
         });
-
-        // Función para imprimir la página
-        function printResults() {
-            window.print();
-        }
-
-        // Función para descargar resultados como TXT
-        function downloadTxt(resultId) {
-        const result = results.find(r => r._id === resultId);
-        if (!result) {
-            alert("Resultado no encontrado.");
-            return;
-        }
-        
-        // Creamos el contenido del archivo TXT
-        const text = `
-Paciente: ${result.patientId.name}
-DNI: ${result.patientId.dni}
-Fecha: ${new Date(result.date).toLocaleDateString()}
-Hemoglobina: ${result.hemoglobina} g/dL
-Hematocrito: ${result.hematocrito} %
-Leucocitos: ${result.leucocitos} 10^3/µL
-Plaquetas: ${result.plaquetas} 10^3/µL
-`;
-        
-        // Creamos un blob con el texto para simular la descarga
-        const blob = new Blob([text], { type: 'text/plain' });
-        
-        // Creamos un enlace temporal para disparar la descarga
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `resultado_${result._id}.txt`;  // Nombre del archivo de texto
-        
-        // Disparamos el clic en el enlace para descargar el archivo
-        link.click();
-    }
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addResultForm = document.getElementById("addResultForm");
+
+        // Función para abrir el formulario con los datos guardados
+        window.editResult = function (result) {
+            // Mostrar el formulario
+            addResultForm.style.display = "block";
+
+            // Rellenar los datos en el formulario
+            document.getElementById("patientId").value = result.patientId._id;
+            document.getElementById("date").value = new Date(result.date).toISOString().split('T')[0];
+            document.getElementById("hemoglobina").value = result.hemoglobina;
+            document.getElementById("hematocrito").value = result.hematocrito;
+            document.getElementById("leucocitos").value = result.leucocitos;
+            document.getElementById("plaquetas").value = result.plaquetas;
+        };
+    });
+</script>
+
 </head>
 <body>
     <nav>
@@ -84,109 +60,93 @@ Plaquetas: ${result.plaquetas} 10^3/µL
         <a href="/results">Resultados</a>
         <a href="/auth/logout">Cerrar Sesión</a>
     </nav>
+
     <h1>Gestión de Resultados</h1>
 
-    <!-- Botón para Añadir Nuevo Resultado -->
-    <button id="addResultButton" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
-        Añadir Nuevo Resultado
-    </button>
+    <button id="addResultButton" class="table-btn">Añadir Nuevo Resultado</button>
 
-    <!-- Formulario para Añadir/Editar Resultados -->
-    <div id="addResultForm" style="display: none;">
-        <h2><%= editing ? "Editar Resultado" : "Añadir Nuevo Resultado" %></h2>
-        <form action="<%= editing ? '/results/' + resultData._id + '/update' : '/results' %>" method="POST">
-            
-            <label>Seleccionar Paciente:</label>
+    <div id="addResultForm" class="form-container" style="display: none;">
+        <h2>Añadir Nuevo Resultado</h2>
+        <form action="/results" method="POST">
+            <label for="patientId">Seleccionar Paciente:</label>
             <select name="patientId" id="patientId" required>
                 <% patients.forEach(patient => { %>
-                    <option value="<%= patient._id %>" <%= editing && resultData.patientId.toString() === patient._id.toString() ? "selected" : "" %> >
+                    <option value="<%= patient._id %>">
                         <%= patient.name %> - <%= patient.dni %>
                     </option>
                 <% }) %>
             </select>
 
-            <br>
-            <!-- Muestra el nombre y DNI del paciente seleccionado -->
-            <p><strong>Paciente:</strong> <span id="patientNameDisplay">Nombre del Paciente</span></p>
-            <p><strong>DNI:</strong> <span id="patientDniDisplay">DNI del Paciente</span></p>
-
-            <label>Fecha del análisis:</label>
-            <input type="date" id="date" name="date" value="<%= editing ? new Date(resultData.date).toISOString().split('T')[0] : '' %>" required />
+            <label for="date">Fecha del análisis:</label>
+            <input type="date" id="date" name="date" required>
 
             <h3>Resultados del Análisis</h3>
-            <div style="border: 1px solid #000; padding: 20px; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                <h4>Informe de Resultados</h4>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="padding: 8px; text-align: left;">Parámetro</th>
-                            <th style="padding: 8px; text-align: left;">Valor</th>
-                            <th style="padding: 8px; text-align: left;">Rango Normal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="padding: 8px;">Hemoglobina (g/dL)</td>
-                            <td style="padding: 8px;">
-                                <input type="number" name="hemoglobina" value="<%= editing ? resultData.hemoglobina : (12 + Math.random() * 4).toFixed(1) %>" step="0.1" min="0" />
-                            </td>
-                            <td style="padding: 8px;">12.0 - 16.0 (Mujeres) / 14.0 - 18.0 (Hombres)</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px;">Hematocrito (%)</td>
-                            <td style="padding: 8px;">
-                                <input type="number" name="hematocrito" value="<%= editing ? resultData.hematocrito : (36 + Math.random() * 4).toFixed(1) %>" step="0.1" min="0" />
-                            </td>
-                            <td style="padding: 8px;">36.0 - 46.0 (Mujeres) / 40.0 - 54.0 (Hombres)</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px;">Leucocitos (10^3/µL)</td>
-                            <td style="padding: 8px;">
-                                <input type="number" name="leucocitos" value="<%= editing ? resultData.leucocitos : (4 + Math.random() * 6).toFixed(2) %>" step="0.01" min="0" />
-                            </td>
-                            <td style="padding: 8px;">4.0 - 11.0</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px;">Plaquetas (10^3/µL)</td>
-                            <td style="padding: 8px;">
-                                <input type="number" name="plaquetas" value="<%= editing ? resultData.plaquetas : (150 + Math.random() * 100).toFixed(0) %>" step="1" min="0" />
-                            </td>
-                            <td style="padding: 8px;">150.0 - 450.0</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <label for="hemoglobina">Hemoglobina (g/dL):</label>
+            <input type="number" name="hemoglobina" id="hemoglobina" step="0.1" min="0" required>
 
-                <p><strong>Observaciones:</strong></p>
-                <p>Los resultados son indicativos de un análisis estándar de sangre. Se recomienda consultar con un médico para interpretar los resultados y realizar un diagnóstico adecuado.</p>
-            </div>
+            <label for="hematocrito">Hematocrito (%):</label>
+            <input type="number" name="hematocrito" id="hematocrito" step="0.1" min="0" required>
 
-            <button type="submit"><%= editing ? "Actualizar" : "Añadir" %></button>
-            <button type="button" onclick="cancelAddResult()" style="background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
-                Cancelar
-            </button>
+            <label for="leucocitos">Leucocitos (10³/µL):</label>
+            <input type="number" name="leucocitos" id="leucocitos" step="0.01" min="0" required>
+
+            <label for="plaquetas">Plaquetas (10³/µL):</label>
+            <input type="number" name="plaquetas" id="plaquetas" step="1" min="0" required>
+
+            <button type="submit">Guardar Resultado</button>
         </form>
+        <a href="/results" class="btn btn-cancel">Cancelar</a>
     </div>
 
-    <!-- Lista de Resultados (Tarjetas Separadas) -->
-    <h2>Lista de Resultados</h2>
-    <div style="display: flex; flex-wrap: wrap;">
+    <h2>Resultados</h2>
+<table id="resultsTable" class="dark-table">
+    <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>DNI</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
         <% results.forEach(result => { %>
-            <div style="border: 1px solid #000; padding: 20px; margin: 10px; width: 30%; box-sizing: border-box; font-family: Arial, sans-serif;">
-                <h4><%= result.patientId.name %> - <%= result.patientId.dni %></h4>
-                <p><strong>Fecha:</strong> <%= new Date(result.date).toLocaleDateString() %></p>
-                <p><strong>Hemoglobina:</strong> <%= result.hemoglobina %> g/dL</p>
-                <p><strong>Hematocrito:</strong> <%= result.hematocrito %> %</p>
-                <p><strong>Leucocitos:</strong> <%= result.leucocitos %> 10^3/µL</p>
-                <p><strong>Plaquetas:</strong> <%= result.plaquetas %> 10^3/µL</p>
-                <a href="/results/<%= result._id %>/edit">Editar</a>
-                <form action="/results/<%= result._id %>/delete" method="POST" style="display:inline;">
-                    <button type="submit">Eliminar</button>
-                </form>
-                <button onclick="downloadTxt('<%= result._id %>')" style="background-color: #2196F3; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">
-                    Descargar TXT
-                </button>
-            </div>
+            <tr>
+                <td><%= result.patientId.name %></td>
+                <td><%= result.patientId.dni %></td>
+                <td><%= new Date(result.date).toLocaleDateString() %></td>
+                <td>
+                    <button onclick="editResult({
+                        patientId: { _id: '<%= result.patientId._id %>' },
+                        date: '<%= result.date %>',
+                        hemoglobina: '<%= result.hemoglobina %>',
+                        hematocrito: '<%= result.hematocrito %>',
+                        leucocitos: '<%= result.leucocitos %>',
+                        plaquetas: '<%= result.plaquetas %>'
+                    })" class="dark-btn-edit">Editar</button>
+                    
+                    <!-- Botón Detalles (sin funcionalidad por ahora) -->
+                    <button class="dark-btn-edit">Detalles</button>
+                    
+                    <form action="/results/<%= result._id %>/delete" method="POST" style="display: inline;">
+                        <button type="submit" class="dark-btn-delete">Eliminar</button>
+                    </form>
+                </td>
+                
+                </td>
+            </tr>
         <% }) %>
+    </tbody>
+</table>
+
+
+    <div id="detailsModal" class="details-modal" style="display: none;">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h3>Detalles del Paciente</h3>
+            <div id="modalDetailsContent">
+                <!-- Aquí se rellenarán los detalles dinámicamente -->
+            </div>
+        </div>
     </div>
 </body>
 </html>

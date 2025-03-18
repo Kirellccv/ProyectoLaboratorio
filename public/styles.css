@@ -1,63 +1,475 @@
-.patients-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.patient-card {
-    width: 300px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-}
-/* Estilos para el cuadro de anuncios */
-.anuncios {
-    border: 2px solid #007BFF;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    margin: 20px 0;
-}
-
-.anuncios h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-.anuncios p {
-    color: #555;
-}
-
-/* Estilos generales para el cuerpo */
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff; /* Texto claro */
+    font-family: 'Segoe UI', Arial, sans-serif; /* Tipografía suave */
     margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-    color: #333;
+    display: flex;
+    flex-direction: column; /* Organiza los elementos verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    margin-top: 60px; /* Ajusta para el navbar */
+    padding: 0;
 }
 
-/* Estilos para la barra de navegación */
-nav {
-    background-color: #007BFF;
-    padding: 10px;
-    border-radius: 5px;
+/* Contenedor del login */
+.login-container {
+    background-color: #1e1e2f; /* Fondo del cuadro */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+    padding: 30px; /* Espaciado interno del cuadro */
+    width: 350px; /* Ajusta el ancho del cuadro */
+    text-align: center;
+}
+
+/* Título del login */
+.login-container h1 {
     margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff; /* Texto claro */
 }
 
-nav a {
+/* Campos de entrada */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    background-color: #2a2a3b; /* Fondo de los inputs */
+    border: 1px solid #444; /* Borde sutil */
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 10px; /* Espaciado interno del texto en los inputs */
+    margin: 10px 0; /* Espaciado externo entre los inputs */
+    width: 95%; /* Reduce el ancho para dar margen a ambos lados */
+    font-size: 14px;
+    box-sizing: border-box; /* Asegura que el relleno no aumente el tamaño total */
+}
+
+/* Botón de ingreso */
+.login-container button {
+    background-color: #0078D4; /* Azul vibrante */
+    border: none;
+    border-radius: 10px;
     color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 20px;
 }
 
-nav a:hover {
+.login-container button:hover {
+    background-color: #005fa1; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Texto de registro */
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #cccccc;
+}
+
+.login-container a {
+    color: #66ccff; /* Azul claro */
+    text-decoration: none;
+}
+
+.login-container a:hover {
     text-decoration: underline;
 }
 
-/* Sección de estado de pacientes */
-div {
-    margin-top: 20px;
+/* Barra de navegación */
+nav {
+    background-color: #1e1e2f; /* Fondo oscuro para la barra de navegación */
+    display: flex; /* Organización horizontal de los enlaces */
+    justify-content: flex-start; /* Alinea los enlaces a la izquierda */
+    align-items: center; /* Centra verticalmente los elementos */
+    padding: 10px 20px; /* Relleno interno de la barra */
+    position: fixed; /* Fijación en la parte superior */
+    top: 0;
+    width: 100%; /* Abarca todo el ancho de la página */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra ligera para separación visual */
+    z-index: 1000; /* Prioridad sobre otros elementos */
+}
+
+/* Espaciado entre los enlaces */
+nav a {
+    color: #cccccc; /* Color gris claro para el texto de los enlaces */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 16px;
+    font-weight: bold; /* Resalta los enlaces */
+    padding: 8px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    margin-right: 10px; /* Espaciado entre los enlaces */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para hover */
+}
+
+/* Hover: Cambia color al pasar el cursor */
+nav a:hover {
+    background-color: #0078D4; /* Fondo azul vibrante */
+    color: #ffffff; /* Texto blanco */
+}
+
+/* Cuadro de bienvenida */
+.welcome-box {
+    background-color: #1e1e2f; /* Fondo oscuro */
+    color: #ffffff; /* Texto claro */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+    width: 90%; /* Ajusta el ancho dinámicamente */
+    max-width: 800px; /* Máximo ancho */
+    animation: fadeIn 1s ease-in-out; /* Animación de entrada */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+}
+
+/* Cuadro de anuncios */
+.announcement-box {
+    background-color: #2a2a3b; /* Fondo un poco más claro que el de bienvenida */
+    color: #ffffff; /* Texto claro */
+    border: 2px solid #0078D4; /* Borde azul vibrante */
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+    width: 90%; /* Ajusta el ancho dinámicamente */
+    max-width: 800px; /* Máximo ancho */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Sombra más marcada */
+    animation: slideIn 1s ease-out; /* Animación de entrada */
+}
+
+/* Encabezados dentro de los cuadros */
+.welcome-box h1, .announcement-box h2 {
+    margin: 0 0 15px 0;
+    color: #cccccc; /* Color ligeramente gris */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px); /* Movimiento inicial reducido */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px); /* Movimiento inicial reducido */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Cuadro de estado de pacientes */
+.patient-status-box {
+    background-color: #1e1e2f; /* Fondo oscuro */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    margin: 20px auto; /* Centrado vertical con margen */
+    width: 90%; /* Ancho dinámico */
+    max-width: 800px; /* Máximo ancho */
+    text-align: center; /* Centrado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra */
+}
+
+/* Tabla para mostrar los estados */
+.patient-status-table {
+    width: 100%; /* Abarca el ancho del cuadro */
+    border-spacing: 0; /* Elimina espacio entre las celdas */
+    border-collapse: collapse; /* Une bordes */
+}
+
+.patient-status-table th,
+.patient-status-table td {
+    background-color: #2a2a3b; /* Fondo de las celdas */
+    color: #cccccc; /* Texto gris claro */
+    padding: 15px; /* Espaciado interno */
+    border: 1px solid #444; /* Bordes sutiles */
+    text-align: center; /* Centrado del texto */
+}
+
+.patient-status-table th {
+    font-weight: bold;
+    background-color: #0078D4; /* Fondo azul para encabezados */
+    color: #ffffff; /* Texto blanco */
+}
+
+.patient-status-table span {
+    font-weight: bold;
+    color: #66ccff; /* Azul claro para resaltar números */
+}
+/* Botón general */
+button {
+    background-color: #0078D4; /* Azul vibrante */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005fa1; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Contenedor principal de pacientes */
+.patients-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos bajen a otra fila si se excede el ancho */
+    justify-content: flex-start; /* Alinea los cuadros hacia la izquierda */
+    gap: 15px; /* Espaciado entre cuadros */
+    padding: 20px; /* Espaciado interno del contenedor */
+    margin: 20px auto;
+    max-width: 1000px; /* Ancho máximo del contenedor */
+}
+
+/* Contenedor principal de pacientes */
+.patients-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas bajen a otra fila */
+    justify-content: flex-start; /* Alinea las tarjetas a la izquierda */
+    gap: 15px; /* Espaciado entre tarjetas */
+    padding: 20px; /* Espaciado interno del contenedor */
+    margin: 20px auto;
+    max-width: 1000px; /* Ancho máximo del contenedor */
+}
+
+/* Tarjetas de pacientes */
+.patient-card {
+    background-color: #1e1e2f; /* Fondo oscuro del cuadro */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra suave */
+    color: #cccccc; /* Texto gris claro */
+    padding: 15px; /* Espaciado interno */
+    width: 250px; /* Ancho fijo */
+    height: 300px; /* Altura fija */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye contenido y botones */
+}
+
+/* Encabezado dentro de las tarjetas */
+.patient-card h2 {
+    margin-top: 0;
+    color: #ffffff; /* Color blanco para los nombres */
+    font-size: 20px;
+}
+
+/* Información del paciente */
+.patient-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Botón dentro de las tarjetas */
+.patient-card button {
+    background-color: #0078D4; /* Azul vibrante */
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px; /* Espaciado interno */
+    width: 80%; /* Ajusta el ancho a un 80% para alineación visual */
+    margin: 15px auto; /* Centra el botón dentro de la tarjeta */
+    display: block; /* Botón como bloque para asegurarlo */
+    text-align: center; /* Alineación del texto dentro del botón */
+    transition: background-color 0.3s ease;
+}
+
+.patient-card button:hover {
+    background-color: #005fa1; /* Azul más oscuro al pasar el mouse */
+}
+/* Quitar subrayado de enlaces */
+.patient-card a {
+    text-decoration: none; /* Quita la subrayación */
+    color: inherit; /* Usa el color del texto actual */
+}
+
+/* Mantén el hover visual sin subrayado */
+.patient-card a:hover {
+    text-decoration: none; /* Asegura que no aparezca subrayado al pasar el cursor */
+}
+
+/* Contenedor del formulario */
+.form-container {
+    background-color: #1e1e2f; /* Fondo oscuro */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra */
+    padding: 30px; /* Espaciado interno */
+    margin: 20px auto;
+    width: 90%; /* Ancho dinámico */
+    max-width: 400px; /* Máximo ancho */
+    text-align: left; /* Alineación del texto */
+    color: #cccccc; /* Texto gris claro */
+}
+
+/* Elementos del formulario */
+.form-container input,
+.form-container select {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    background-color: #2a2a3b; /* Fondo oscuro del input */
+    color: #ffffff; /* Texto claro */
+    border: 1px solid #444; /* Borde sutil */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px 0; /* Espaciado entre elementos */
+    font-size: 14px;
+    box-sizing: border-box; /* Asegura que el ancho incluya padding y borde */
+}
+
+/* Etiquetas */
+.form-container label {
+    color: #ffffff; /* Texto claro */
+    font-weight: bold;
+    margin-top: 10px;
+    display: block; /* Para asegurarse que esté encima de los inputs */
+}
+
+/* Botón de guardar */
+.form-container button {
+    background-color: #0078D4; /* Azul vibrante */
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 80%; /* Ajusta el ancho a 80% */
+    margin: 15px auto; /* Centra el botón dentro del contenedor */
+    display: block; /* Asegura alineación en bloque */
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #005fa1; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Botón de cancelar */
+.form-container a {
+    display: block; /* Se comporta como un botón */
+    text-align: center; /* Centra el texto */
+    background-color: #dc3545; /* Rojo */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 10px; /* Bordes redondeados */
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 80%; /* Ajusta el ancho a 80% */
+    margin: 10px auto; /* Centra el botón dentro del contenedor */
+    transition: background-color 0.3s ease;
+}
+
+.form-container a:hover {
+    background-color: #b02a37; /* Rojo más oscuro al pasar el mouse */
+}
+/* Estilo del modal */
+.details-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 40%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Estilo general para la tabla */
+.dark-table {
+    width: 80%; /* Tabla más pequeña */
+    margin: 20px auto; /* Centrada con espacio superior */
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background-color: #1e1e1e; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+}
+
+/* Encabezado de la tabla */
+.dark-table thead tr {
+    background-color: #3a3a3a; /* Encabezado más oscuro */
+    color: #ffffff; /* Texto blanco */
+}
+
+/* Celdas de la tabla */
+.dark-table th, .dark-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444; /* Línea de separación tenue */
+}
+
+/* Hover sobre las filas */
+.dark-table tbody tr:hover {
+    background-color: #2a2a2a; /* Ligeramente más claro al pasar el ratón */
+}
+
+/* Última fila sin borde */
+.dark-table tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+/* Botones dentro de la tabla */
+.dark-btn-edit, .dark-btn-delete {
+    color: #ffffff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botón Editar */
+.dark-btn-edit {
+    background-color: #1a73e8;
+}
+
+.dark-btn-edit:hover {
+    background-color: #145db2;
+}
+
+/* Botón Eliminar */
+.dark-btn-delete {
+    background-color: #d93025;
+}
+
+.dark-btn-delete:hover {
+    background-color: #a41c17;
 }
