@@ -4,60 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <!-- Vincular el archivo CSS -->
     <link rel="stylesheet" href="/styles.css">
-
 </head>
 <body>
-        <!-- Barra de Navegación -->
-        <nav>
+    <!-- Barra de Navegación -->
+    <nav>
+        <div class="nav-left">
             <a href="/">Inicio</a>
             <a href="/patients">Pacientes</a>
             <a href="/results">Resultados</a>
+        </div>
+        <div class="nav-right">
+            <span id="user-name"><%= userName %></span>
             <a href="/auth/logout">Cerrar Sesión</a>
-        </nav>
-    
-  <!-- Cuadro de bienvenida -->
-  <div class="welcome-box">
-    <h1>¡Bienvenido, Empleado!</h1>
-    <p>Nos alegra verte de nuevo. Esperamos que tengas un día productivo y lleno de éxitos.</p>
-</div>
+        </div>
+    </nav>
 
-<!-- Cuadro de anuncios -->
-<div class="announcement-box">
-    <h2>Anuncios Importantes</h2>
-    <p>
-        Se les recuerda a todo el personal que el cumplimiento de las normas de salubridad es obligatorio. 
-        Utilicen guantes en todo momento, mantengan las áreas limpias y sigan los protocolos establecidos 
-        para garantizar la seguridad de todos. ¡Gracias por su cooperación!
-    </p>
-</div>
-<!-- Cuadro de estado de pacientes -->
-<div class="patient-status-box">
-    <h2>Estado de Pacientes</h2>
-    <table class="patient-status-table">
-        <thead>
-            <tr>
-                <th>Estado</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>No empezado</td>
-                <td><span>0</span></td>
-            </tr>
-            <tr>
-                <td>En proceso</td>
-                <td><span>0</span></td>
-            </tr>
-            <tr>
-                <td>Terminado</td>
-                <td><span>0</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <!-- Cuadro de bienvenida -->
+    <div class="welcome-box">
+        <h1>¡Bienvenido, <%= userName %>!</h1>
+        <p>Nos alegra verte de nuevo. Esperamos que tengas un día productivo y lleno de éxitos.</p>
+    </div>
 
+    <!-- Cuadro de anuncios -->
+    <div class="announcement-box">
+        <h2>Anuncios Importantes</h2>
+        <p>
+            Se les recuerda a todo el personal que el cumplimiento de las normas de salubridad es obligatorio. 
+            Utilicen guantes en todo momento, mantengan las áreas limpias y sigan los protocolos establecidos 
+            para garantizar la seguridad de todos. ¡Gracias por su cooperación!
+        </p>
+    </div>
+
+    <!-- Cuadro de estado de pacientes -->
+    <div class="patient-status-box">
+        <h2>Estado de Pacientes</h2>
+        <table class="patient-status-table">
+            <thead>
+                <tr>
+                    <th>Estado</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>No empezado</td>
+                    <td><span>0</span></td>
+                </tr>
+                <tr>
+                    <td>En proceso</td>
+                    <td><span>0</span></td>
+                </tr>
+                <tr>
+                    <td>Terminado</td>
+                    <td><span>0</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Realiza una solicitud GET a la API para obtener los datos
+                const response = await fetch("/api/patient-status");
+                const data = await response.json();
+
+                // Array con los estados que se mostrarán en la tabla
+                const estados = ["No empezado", "En proceso", "Terminado"];
+
+                // Actualiza las filas de la tabla con los valores obtenidos
+                estados.forEach((estado, index) => {
+                    const cantidad = data[estado] || 0; // Si no hay datos, mostrar 0
+                    document.querySelectorAll(".patient-status-table tbody tr")[index]
+                        .querySelector("span").textContent = cantidad;
+                });
+            } catch (error) {
+                console.error("Error al cargar el estado de pacientes:", error);
+            }
+        });
+    </script>
 </body>
 </html>

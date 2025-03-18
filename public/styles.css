@@ -74,38 +74,97 @@ body {
 .login-container a:hover {
     text-decoration: underline;
 }
+/* Nombre de Usuario */
+#user-name {
+    background-color: #0078D4; /* Azul vibrante */
+    color: #ffffff; /* Texto blanco */
+    padding: 10px 20px; /* Aumentar espaciado interno */
+    border-radius: 8px; /* Bordes ligeramente más redondeados */
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 15px; /* Espaciado respecto a "Cerrar Sesión" */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); /* Sombra ligeramente más profunda */
+    text-align: center; /* Centrar el texto */
+    display: inline-block; /* Asegura el tamaño compacto del cuadro */
+}
+
 
 /* Barra de navegación */
 nav {
-    background-color: #1e1e2f; /* Fondo oscuro para la barra de navegación */
-    display: flex; /* Organización horizontal de los enlaces */
-    justify-content: flex-start; /* Alinea los enlaces a la izquierda */
-    align-items: center; /* Centra verticalmente los elementos */
-    padding: 10px 20px; /* Relleno interno de la barra */
+    background-color: #1e1e2f; /* Fondo oscuro */
+    display: flex; /* Organización horizontal */
+    justify-content: space-between; /* Espaciado entre izquierda y derecha */
+    align-items: center; /* Centrar verticalmente */
+    padding: 15px 80px; /* Aumentar margen interno (arriba-abajo: 15px, izquierda-derecha: 80px) */
     position: fixed; /* Fijación en la parte superior */
     top: 0;
-    width: 100%; /* Abarca todo el ancho de la página */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra ligera para separación visual */
+    width: calc(100% - 160px); /* Reducir el ancho relativo al padding */
+    margin: 0 auto; /* Centrar el navbar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra ligera */
     z-index: 1000; /* Prioridad sobre otros elementos */
+    border-radius: 10px; /* Opcional: Bordes ligeramente redondeados */
 }
 
-/* Espaciado entre los enlaces */
-nav a {
-    color: #cccccc; /* Color gris claro para el texto de los enlaces */
+
+/* Enlaces a la izquierda */
+.nav-left a {
+    background-color: #0078D4; /* Fondo azul para los cuadros */
+    color: #ffffff; /* Texto blanco */
     text-decoration: none; /* Sin subrayado */
     font-size: 16px;
-    font-weight: bold; /* Resalta los enlaces */
-    padding: 8px 15px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    margin-right: 10px; /* Espaciado entre los enlaces */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para hover */
+    font-weight: bold;
+    padding: 10px 20px; /* Espaciado interno para convertirlos en botones */
+    border-radius: 8px; /* Bordes redondeados */
+    margin-right: 15px; /* Espaciado entre enlaces */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Efectos suaves */
 }
 
-/* Hover: Cambia color al pasar el cursor */
-nav a:hover {
-    background-color: #0078D4; /* Fondo azul vibrante */
-    color: #ffffff; /* Texto blanco */
+.nav-left a:hover {
+    background-color: #005fa1; /* Azul más oscuro al pasar el ratón */
+    color: #ffffff; /* Asegura que el texto siga siendo blanco */
 }
+
+
+/* Contenedor de la derecha */
+.nav-right {
+    display: flex;
+    align-items: center; /* Alinear verticalmente */
+}
+
+/* Nombre del usuario */
+#user-name {
+    background-color: #0078D4; /* Azul vibrante */
+    color: #ffffff; /* Texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 20px; /* Mayor separación del botón "Cerrar Sesión" */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+    text-align: center; /* Centra el texto */
+}
+
+
+/* Botón "Cerrar Sesión" */
+.nav-right a {
+    background-color: #d93025; /* Rojo vibrante */
+    color: #ffffff; /* Texto blanco */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px; /* Espaciado interno consistente con el nombre del usuario */
+    border-radius: 8px; /* Bordes ligeramente más redondeados */
+    margin-left: 15px; /* Espaciado con respecto al nombre del usuario */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); /* Sombra coherente */
+    transition: background-color 0.3s ease;
+}
+
+.nav-right a:hover {
+    background-color: #a41c17; /* Rojo más oscuro */
+}
+
+
 
 /* Cuadro de bienvenida */
 .welcome-box {
@@ -174,6 +233,7 @@ nav a:hover {
     max-width: 800px; /* Máximo ancho */
     text-align: center; /* Centrado */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra */
+    animation: fadeIn 1s ease-in-out; /* Animación de entrada */
 }
 
 /* Tabla para mostrar los estados */

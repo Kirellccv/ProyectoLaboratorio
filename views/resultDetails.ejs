@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Resultado</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white; /* Fondo blanco para impresión */
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        .field-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .field-group label {
+            width: 45%;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .field-group input {
+            width: 45%;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .btn-print {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-print:hover {
+            background-color: #0056b3;
+        }
+
+        @media print {
+            .btn-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles del Paciente</h1>
+
+        <!-- Información del Paciente -->
+        <h2>Información Personal</h2>
+        <div class="field-group">
+            <label for="patientName">Nombre del Paciente:</label>
+            <input type="text" id="patientName" value="<%= result.patientId.name %>" readonly>
+
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" value="<%= result.patientId.dni %>" readonly>
+        </div>
+
+        <div class="field-group">
+            <label for="age">Edad:</label>
+            <input type="text" id="age" value="<%= result.patientId.age %>" readonly>
+
+            <label for="gender">Género:</label>
+            <input type="text" id="gender" value="<%= result.patientId.gender %>" readonly>
+        </div>
+
+        <!-- Información del Resultado -->
+        <h2>Detalles del Análisis</h2>
+        <div class="field-group">
+            <label for="date">Fecha del Análisis:</label>
+            <input type="text" id="date" value="<%= new Date(result.date).toLocaleDateString() %>" readonly>
+        </div>
+
+        <h3>Resultados</h3>
+        <div class="field-group">
+            <label for="hemoglobina">Hemoglobina (g/dL):</label>
+            <input type="text" id="hemoglobina" value="<%= result.hemoglobina %>" readonly>
+
+            <label for="hematocrito">Hematocrito (%):</label>
+            <input type="text" id="hematocrito" value="<%= result.hematocrito %>" readonly>
+        </div>
+
+        <div class="field-group">
+            <label for="leucocitos">Leucocitos (10³/µL):</label>
+            <input type="text" id="leucocitos" value="<%= result.leucocitos %>" readonly>
+
+            <label for="plaquetas">Plaquetas (10³/µL):</label>
+            <input type="text" id="plaquetas" value="<%= result.plaquetas %>" readonly>
+        </div>
+
+        <!-- Botón de impresión -->
+        <button class="btn-print no-print" onclick="window.print()">Imprimir</button>
+    </div>
+</body>
+</html>

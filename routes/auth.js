@@ -12,49 +12,59 @@ router.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Guardar el usuario en la base de datos sin cifrar la contraseña
-        const user = new User({
-            username,
-            password
-        });
+        // Crear un nuevo usuario con los datos enviados
+        const user = new User({ username, password });
 
         // Guardar el usuario en la base de datos
         await user.save();
-        res.redirect('/auth/login');  // Redirigir al login después del registro
+
+        // Redirigir al login después del registro
+        res.redirect('/auth/login');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Error en el registro');
+        console.error('Error durante el registro:', err);
+        res.status(500).send('Error al registrar el usuario');
     }
 });
 
 // Ruta de login (GET para mostrar el formulario)
 router.get('/login', (req, res) => {
-    res.render('login');
+    const error = req.query.error || ''; // Mostrar errores si los hay
+    res.render('login', { error });
 });
 
 // Ruta de login (POST para autenticar usuario)
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+
+        // Buscar el usuario en la base de datos
         const user = await User.findOne({ username });
 
-        if (user && user.password === password) {
-            // Guardar sesión
-            req.session.user = user;
-            res.redirect('/');  // Redirigir al inicio después del login
-        } else {
-            res.status(401).send('Credenciales incorrectas');
+        if (!user) {
+            // Usuario no encontrado
+            return res.redirect('/auth/login?error=Usuario no encontrado');
         }
+
+        if (user.password !== password) {
+            // Contraseña incorrecta
+            return res.redirect('/auth/login?error=Credenciales incorrectas');
+        }
+
+        // Guardar información mínima del usuario en la sesión
+        req.session.user = { name: user.username };
+
+        // Redirigir al inicio después del login
+        res.redirect('/');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Error en el login');
+        console.error('Error durante el login:', err);
+        res.status(500).send('Error al iniciar sesión');
     }
 });
 
 // Ruta de logout
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {
-        res.redirect('/auth/login');  // Redirigir al login después de cerrar sesión
+        res.redirect('/auth/login'); // Redirigir al login después de cerrar sesión
     });
 });
 

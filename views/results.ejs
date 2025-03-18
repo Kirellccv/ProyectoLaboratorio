@@ -55,11 +55,17 @@
 </head>
 <body>
     <nav>
-        <a href="/">Inicio</a>
-        <a href="/patients">Pacientes</a>
-        <a href="/results">Resultados</a>
-        <a href="/auth/logout">Cerrar Sesión</a>
+        <div class="nav-left">
+            <a href="/">Inicio</a>
+            <a href="/patients">Pacientes</a>
+            <a href="/results">Resultados</a>
+        </div>
+        <div class="nav-right">
+            <span id="user-name"><%= userName %></span>
+            <a href="/auth/logout">Cerrar Sesión</a>
+        </div>
     </nav>
+
 
     <h1>Gestión de Resultados</h1>
 
@@ -124,8 +130,12 @@
                         plaquetas: '<%= result.plaquetas %>'
                     })" class="dark-btn-edit">Editar</button>
                     
-                    <!-- Botón Detalles (sin funcionalidad por ahora) -->
-                    <button class="dark-btn-edit">Detalles</button>
+                    <!-- Botón Detalles (abre nueva pèstaña) -->
+                    <a href="/results/<%= result._id %>/details" target="_blank" class="dark-btn-edit">Detalles</a>
+
+
+
+
                     
                     <form action="/results/<%= result._id %>/delete" method="POST" style="display: inline;">
                         <button type="submit" class="dark-btn-delete">Eliminar</button>

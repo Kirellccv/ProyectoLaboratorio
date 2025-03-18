@@ -12,14 +12,16 @@ function isAuthenticated(req, res, next) {
 
 // Página para añadir pacientes
 router.get('/add', isAuthenticated, (req, res) => {
-    res.render('addPatient');  // Asegúrate de que `views/addPatient.ejs` existe
+    const userName = req.session.user ? req.session.user.name : 'Invitado'; // Obtener el nombre del usuario logueado
+    res.render('addPatient', { userName });  // Pasar userName a la vista
 });
 
 // Mostrar lista de pacientes
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const patients = await Patient.find();
-        res.render('patients', { patients });
+        const userName = req.session.user ? req.session.user.name : 'Invitado'; // Obtener el nombre del usuario logueado
+        res.render('patients', { patients, userName }); // Pasar userName a la vista
     } catch (err) {
         console.error('❌ Error al cargar los pacientes:', err);
         res.status(500).send('Error interno del servidor');
@@ -53,6 +55,7 @@ router.post('/add', isAuthenticated, async (req, res) => {
         res.status(500).send('Error interno del servidor');
     }
 });
+
 // Página para editar paciente
 router.get('/edit/:id', isAuthenticated, async (req, res) => {
     try {
@@ -60,13 +63,13 @@ router.get('/edit/:id', isAuthenticated, async (req, res) => {
         if (!patient) {
             return res.status(404).send('Paciente no encontrado');
         }
-        res.render('editPatient', { patient });
+        const userName = req.session.user ? req.session.user.name : 'Invitado'; // Obtener el nombre del usuario logueado
+        res.render('editPatient', { patient, userName }); // Pasar userName a la vista
     } catch (err) {
-        console.error(err);
+        console.error('Error al cargar el paciente:', err);
         res.status(500).send('Error al cargar el paciente');
     }
 });
-
 
 // Actualizar paciente
 router.post('/update/:id', isAuthenticated, async (req, res) => {
@@ -81,7 +84,7 @@ router.post('/update/:id', isAuthenticated, async (req, res) => {
         await Patient.findByIdAndUpdate(req.params.id, { name, age, dni, gender, phone, status });
         res.redirect('/patients');
     } catch (err) {
-        console.error(err);
+        console.error('Error al actualizar paciente:', err);
         res.status(500).send('Error al actualizar paciente');
     }
 });
@@ -92,10 +95,9 @@ router.post('/delete/:id', isAuthenticated, async (req, res) => {
         await Patient.findByIdAndDelete(req.params.id);
         res.redirect('/patients');
     } catch (err) {
-        console.error(err);
+        console.error('Error al eliminar paciente:', err);
         res.status(500).send('Error al eliminar paciente');
     }
 });
-
 
 module.exports = router;

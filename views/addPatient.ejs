@@ -9,11 +9,17 @@
 <body>
     <!-- Barra de navegación -->
     <nav>
-        <a href="/">Inicio</a>
-        <a href="/patients">Pacientes</a>
-        <a href="/results">Resultados</a>
-        <a href="/auth/logout">Cerrar Sesión</a>
+        <div class="nav-left">
+            <a href="/">Inicio</a>
+            <a href="/patients">Pacientes</a>
+            <a href="/results">Resultados</a>
+        </div>
+        <div class="nav-right">
+            <span id="user-name"><%= userName %></span>
+            <a href="/auth/logout">Cerrar Sesión</a>
+        </div>
     </nav>
+
 
     <h1>Añadir Paciente</h1>
 
