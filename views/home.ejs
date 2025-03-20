@@ -12,13 +12,16 @@
         <div class="nav-left">
             <a href="/">Inicio</a>
             <a href="/patients">Pacientes</a>
+            <a href="/analysis">Análisis</a>
             <a href="/results">Resultados</a>
+             <!-- Nuevo apartado -->
         </div>
         <div class="nav-right">
             <span id="user-name"><%= userName %></span>
             <a href="/auth/logout">Cerrar Sesión</a>
         </div>
     </nav>
+    
 
     <!-- Cuadro de bienvenida -->
     <div class="welcome-box">
@@ -62,6 +65,29 @@
             </tbody>
         </table>
     </div>
+<!-- Cuadro de compatibilidad sanguínea -->
+<div class="patient-status-box">
+    <h3>Compatibilidad Sanguínea</h3>
+    <table class="patient-status-table">
+        <thead>
+            <tr>
+                <th>Grupo Sanguíneo</th>
+                <th>Puede donar a</th>
+                <th>Puede recibir de</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>O-</td><td>Todos los grupos</td><td>O-</td></tr>
+            <tr><td>O+</td><td>O+, A+, B+, AB+</td><td>O+, O-</td></tr>
+            <tr><td>A-</td><td>A+, A-, AB+, AB-</td><td>A-, O-</td></tr>
+            <tr><td>A+</td><td>A+, AB+</td><td>A+, A-, O+, O-</td></tr>
+            <tr><td>B-</td><td>B+, B-, AB+, AB-</td><td>B-, O-</td></tr>
+            <tr><td>B+</td><td>B+, AB+</td><td>B+, B-, O+, O-</td></tr>
+            <tr><td>AB-</td><td>AB+, AB-</td><td>AB-, A-, B-, O-</td></tr>
+            <tr><td>AB+</td><td>AB+</td><td>Todos los grupos</td></tr>
+        </tbody>
+    </table>
+</div>
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {

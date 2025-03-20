@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Análisis</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const analysisTypeSelect = document.getElementById("analysisType");
+            const analysisForms = document.querySelectorAll(".analysis-form");
+
+            // Ocultar todos los formularios al inicio
+            analysisForms.forEach(form => form.style.display = "none");
+
+            // Mostrar el formulario correspondiente al análisis seleccionado
+            analysisTypeSelect.addEventListener("change", function () {
+                analysisForms.forEach(form => form.style.display = "none"); 
+                const selectedForm = document.getElementById(this.value);
+                if (selectedForm) {
+                    selectedForm.style.display = "block";
+                    fillRandomData(this.value);
+                }
+            });
+
+            // Función para rellenar datos aleatorios en los formularios
+            function fillRandomData(type) {
+                if (type === "hematologico") {
+                    document.getElementById("hemoglobina").value = (12 + Math.random() * 4).toFixed(1);
+                    document.getElementById("hematocrito").value = (36 + Math.random() * 4).toFixed(1);
+                    document.getElementById("leucocitos").value = (4 + Math.random() * 6).toFixed(2);
+                    document.getElementById("plaquetas").value = (150 + Math.random() * 100).toFixed(0);
+                } else if (type === "hepatologico") {
+                    document.getElementById("bilirrubina").value = (0.1 + Math.random() * 1).toFixed(2);
+                    document.getElementById("tgo").value = (10 + Math.random() * 30).toFixed(1);
+                    document.getElementById("tgp").value = (10 + Math.random() * 30).toFixed(1);
+                    document.getElementById("fosfatasa").value = (50 + Math.random() * 100).toFixed(1);
+                } else if (type === "renal") {
+                    document.getElementById("creatinina").value = (0.6 + Math.random() * 1.4).toFixed(2);
+                    document.getElementById("urea").value = (15 + Math.random() * 25).toFixed(1);
+                    document.getElementById("acidoUrico").value = (3 + Math.random() * 4).toFixed(1);
+                } else if (type === "lipidos") {
+                    document.getElementById("colesterol").value = (150 + Math.random() * 100).toFixed(1);
+                    document.getElementById("hdl").value = (35 + Math.random() * 20).toFixed(1);
+                    document.getElementById("ldl").value = (70 + Math.random() * 80).toFixed(1);
+                    document.getElementById("trigliceridos").value = (50 + Math.random() * 150).toFixed(1);
+                } else if (type === "glucosa") {
+                    document.getElementById("glucosa").value = (70 + Math.random() * 60).toFixed(1);
+                    document.getElementById("hemoglobinaGlico").value = (4 + Math.random() * 3).toFixed(1);
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="/">Inicio</a>
+            <a href="/patients">Pacientes</a>
+            <a href="/analysis">Análisis</a>
+            <a href="/results">Resultados</a>
+            
+        </div>
+        <div class="nav-right">
+            <span id="user-name"><%= userName %></span>
+            <a href="/auth/logout">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <h1>Gestión de Análisis</h1>
+
+    <div class="form-container">
+        <form action="/analysis" method="POST">
+            <label for="patientId">Seleccionar Paciente:</label>
+            <select name="patientId" id="patientId" required>
+                <% patients.forEach(patient => { %>
+                    <option value="<%= patient._id %>">
+                        <%= patient.name %> - <%= patient.dni %>
+                    </option>
+                <% }) %>
+            </select>
+
+            <label for="analysisType">Seleccionar Tipo de Análisis:</label>
+            <select id="analysisType" required>
+                <option value="">-- Seleccionar --</option>
+                <option value="hematologico">Hematológico</option>
+                <option value="hepatologico">Hepático</option>
+                <option value="renal">Renal</option>
+                <option value="lipidos">Lípidos</option>
+                <option value="glucosa">Glucosa</option>
+            </select>
+
+            <!-- Formulario Hematológico -->
+            <div id="hematologico" class="analysis-form">
+                <h3>Análisis Hematológico</h3>
+                <label>Hemoglobina (g/dL): <input type="number" id="hemoglobina" name="hemoglobina" step="0.1"></label>
+                <label>Hematocrito (%): <input type="number" id="hematocrito" name="hematocrito" step="0.1"></label>
+                <label>Leucocitos (10³/µL): <input type="number" id="leucocitos" name="leucocitos" step="0.01"></label>
+                <label>Plaquetas (10³/µL): <input type="number" id="plaquetas" name="plaquetas"></label>
+            </div>
+
+            <!-- Formulario Hepático -->
+            <div id="hepatologico" class="analysis-form">
+                <h3>Análisis Hepático</h3>
+                <label>Bilirrubina (mg/dL): <input type="number" id="bilirrubina" name="bilirrubina" step="0.01"></label>
+                <label>TGO (U/L): <input type="number" id="tgo" name="tgo"></label>
+                <label>TGP (U/L): <input type="number" id="tgp" name="tgp"></label>
+                <label>Fosfatasa Alcalina (U/L): <input type="number" id="fosfatasa" name="fosfatasa"></label>
+            </div>
+
+            <!-- Formulario Renal -->
+            <div id="renal" class="analysis-form">
+                <h3>Análisis Renal</h3>
+                <label>Creatinina (mg/dL): <input type="number" id="creatinina" name="creatinina"></label>
+                <label>Urea (mg/dL): <input type="number" id="urea" name="urea"></label>
+                <label>Ácido Úrico (mg/dL): <input type="number" id="acidoUrico" name="acidoUrico"></label>
+            </div>
+
+            <!-- Formulario Lípidos -->
+            <div id="lipidos" class="analysis-form">
+                <h3>Análisis de Lípidos</h3>
+                <label>Colesterol (mg/dL): <input type="number" id="colesterol" name="colesterol" step="0.1"></label>
+                <label>HDL (mg/dL): <input type="number" id="hdl" name="hdl" step="0.1"></label>
+                <label>LDL (mg/dL): <input type="number" id="ldl" name="ldl" step="0.1"></label>
+                <label>Triglicéridos (mg/dL): <input type="number" id="trigliceridos" name="trigliceridos" step="0.1"></label>
+            </div>
+
+            <!-- Formulario Glucosa -->
+            <div id="glucosa" class="analysis-form">
+                <h3>Análisis de Glucosa</h3>
+                <label>Glucosa (mg/dL): <input type="number" id="glucosa" name="glucosa" step="0.1"></label>
+                <label>Hemoglobina Glicosilada (%): <input type="number" id="hemoglobinaGlico" name="hemoglobinaGlico" step="0.1"></label>
+            </div>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+
+</body>
+</html>

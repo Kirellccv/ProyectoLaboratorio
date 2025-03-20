@@ -1,3 +1,4 @@
+//server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -34,7 +35,7 @@ app.use('/auth', require('./routes/auth'));      // Rutas de autenticación (log
 app.use('/patients', require('./routes/patients'));  // Rutas de pacientes
 app.use('/results', require('./routes/results'));  // Rutas de resultados
 app.use('/', require('./routes/home'));         // Ruta principal (home)
-
+app.use('/analysis', require('./routes/analysis'));//  Nueva ruta para análisis
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
